@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Fashing',
       theme:AppTheme.appTheme,
-      home: Home()
+      home: const Home()
     );
   }
 }
