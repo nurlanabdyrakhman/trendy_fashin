@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trendy_fashion/main_wrapper.dart';
 import 'package:trendy_fashion/screen/home.dart';
 import 'package:trendy_fashion/utils/app_theme.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Fashing',
       theme:AppTheme.appTheme,
-      home: const Home()
+      home: const MainWrapper()
     );
   }
 }
