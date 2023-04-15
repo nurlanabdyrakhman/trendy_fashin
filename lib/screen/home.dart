@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:trendy_fashion/model/categories_model.dart';
+import 'package:trendy_fashion/screen/detail.dart';
 import 'package:trendy_fashion/utils/constants.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -21,7 +22,8 @@ class _HomeState extends State<Home> {
     super.initState();
     _controller = PageController(initialPage: 2);
   }
-    @override
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -134,7 +136,19 @@ class _HomeState extends State<Home> {
                     itemCount: mainList.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                          onTap: () {}, child: view(index, theme, size));
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Details(
+                                data: mainList[index],
+                                iscameFromMostPopularPart: false,
+                              ),
+                            ),
+                          );
+                        },
+                        child: view(index, theme, size),
+                      );
                     },
                   ),
                 ),
@@ -161,67 +175,90 @@ class _HomeState extends State<Home> {
                     ),
                   )),
               FadeInUp(
-                delay: const Duration(milliseconds: 750,),
+                delay: const Duration(
+                  milliseconds: 750,
+                ),
                 child: SizedBox(
                   width: size.width,
                   height: size.height * 0.44,
                   //color: Colors.yellow,
                   child: GridView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: mainList.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.63,
-                          crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        BaseModel current = mainList[index];
-                        return GestureDetector(
-                          onTap: (){},
-                          child: Column(
-                            children: [
-                              Container(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: mainList.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 0.63, crossAxisCount: 2),
+                    itemBuilder: (context, index) {
+                      BaseModel current = mainList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Details(
+                                data: mainList[index],
+                                iscameFromMostPopularPart: true,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Hero(
+                              tag: current.imageUrl,
+                              child: Container(
                                 width: size.width * 0.5,
                                 height: size.height * 0.3,
                                 margin: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  image: DecorationImage(
-                                    image: AssetImage(current.imageUrl),
-                                    fit: BoxFit.cover,
-                        
-                                  ),
-                                  boxShadow:const [
-                                    BoxShadow(
-                                      offset: Offset(0, 4),
-                                      blurRadius: 4,
-                                      color: Color.fromARGB(61, 0, 0, 0,),
-                                    )
-                                  ]
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.only(top: 2.0),
-                              child: Text(current.name,
-                              style: theme.bodyMedium,
-                              ),),
-                               RichText(
-                                    text: TextSpan(
-                                      text: "€",
-                                      style: TextStyle(color: Colors.black, fontSize: 16),
-                                      children: [
-                                        TextSpan(
-                                          text: current.price.toString(),
-                                          style: theme.bodySmall?.copyWith(
-                                            color: primaryColor,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                    borderRadius: BorderRadius.circular(3),
+                                    image: DecorationImage(
+                                      image: AssetImage(current.imageUrl),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        offset: Offset(0, 4),
+                                        blurRadius: 4,
+                                        color: Color.fromARGB(
+                                          61,
+                                          0,
+                                          0,
+                                          0,
                                         ),
-                                      ],
+                                      )
+                                    ]),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 2.0),
+                              child: Text(
+                                current.name,
+                                style: theme.bodyMedium,
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: "€",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                                children: [
+                                  TextSpan(
+                                    text: current.price.toString(),
+                                    style: theme.bodySmall?.copyWith(
+                                      color: primaryColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                            ],
-                          ),
-                        );
-                      },),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -253,16 +290,19 @@ class _HomeState extends State<Home> {
       padding: const EdgeInsets.only(top: 15),
       child: Column(
         children: [
-          Container(
-            width: size.width * 0.6,
-            height: size.height * 0.35,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              image: DecorationImage(
-                image: AssetImage(
-                  data.imageUrl,
+          Hero(
+            tag: data.id,
+            child: Container(
+              width: size.width * 0.6,
+              height: size.height * 0.35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                image: DecorationImage(
+                  image: AssetImage(
+                    data.imageUrl,
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
           ),
