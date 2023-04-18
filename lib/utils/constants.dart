@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color primaryColor = Color(0xfff9985f);
+const Color primaryColor = Color.fromARGB(255, 95, 249, 118);
 
 List<String> sizes = ["S", "M", "L", "XL", "XLL"];
 List<Color> colors = const [
