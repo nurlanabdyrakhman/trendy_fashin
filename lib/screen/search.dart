@@ -4,6 +4,7 @@ import 'package:trendy_fashion/model/base_model.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:trendy_fashion/screen/detail.dart';
 import '../data/app_data.dart';
+import '../medhud/add_to_cart.dart';
 import '../utils/constants.dart';
 
 class Search extends StatefulWidget {
@@ -186,7 +187,7 @@ class _SearchState extends State<Search> {
                                       backgroundColor: primaryColor,
                                       child: IconButton(
                                         onPressed: () {
-                                          print(current.name+'Added shopping list');
+                                        AddToCart.addToCart(current,context);
                                         },
                                         icon: const Icon(LineIcons.addToShoppingCart),
                                         color: Colors.white,

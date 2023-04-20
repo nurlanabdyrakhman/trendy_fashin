@@ -3,6 +3,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:trendy_fashion/data/app_data.dart';
 import 'package:trendy_fashion/main_wrapper.dart';
+import 'package:trendy_fashion/model/base_model.dart';
 import 'package:trendy_fashion/widgets/reusable_button.dart';
 import 'package:trendy_fashion/widgets/reusable_card_row.dart';
 
@@ -16,6 +17,16 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+    //Delete current list
+    void onDelete(BaseModel data){
+     setState(() {
+     if(itemsOnCart.length==1){
+      itemsOnCart.clear();
+     }else{
+      itemsOnCart.removeWhere((element) => element.id==data.id);
+     }
+     });
+    }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -31,52 +42,7 @@ class _CartState extends State<Cart> {
               width: size.width,
               height: size.height * 0.6,
               child: itemsOnCart.isNotEmpty
-                  ?  Column(
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.02,
-                        ),
-                        FadeInUp(
-                          delay: const Duration(milliseconds: 200),
-                          child: const Image(
-                            image: AssetImage('assets/images/empty.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        FadeInUp(
-                          delay: const Duration(milliseconds: 250),
-                          child: const Text(
-                            'your cart is empty right now :(',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        FadeInUp(
-                          delay: Duration(milliseconds: 300),
-                          child: IconButton(
-                            onPressed: () {
-                              print("salam");
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MainWrapper(),
-                                ),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.shopping_bag_outlined,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ): ListView.builder(
+                  ? ListView.builder(
                       itemCount: itemsOnCart.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
@@ -132,7 +98,9 @@ class _CartState extends State<Cart> {
                                                   const TextStyle(fontSize: 18),
                                             ),
                                             IconButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                onDelete(current);
+                                              },
                                               icon: const Icon(
                                                 Icons.close,
                                                 color: Colors.black,
@@ -249,7 +217,51 @@ class _CartState extends State<Cart> {
                         );
                       },
                     )
-                  
+                  : Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.02,
+                        ),
+                        FadeInUp(
+                          delay: const Duration(milliseconds: 200),
+                          child: const Image(
+                            image: AssetImage('assets/images/empty.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+                        FadeInUp(
+                          delay: const Duration(milliseconds: 250),
+                          child: const Text(
+                            'your cart is empty right now :(',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        FadeInUp(
+                          delay: Duration(milliseconds: 300),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainWrapper(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.shopping_bag_outlined,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
             ),
             Positioned(
               bottom: 0,

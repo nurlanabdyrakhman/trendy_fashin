@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trendy_fashion/medhud/add_to_cart.dart';
 import 'package:trendy_fashion/model/base_model.dart';
 import 'package:trendy_fashion/utils/constants.dart';
 import 'package:animate_do/animate_do.dart';
@@ -260,7 +261,7 @@ class _DetailsState extends State<Details> {
               child: Padding(
                 padding:  EdgeInsets.only(top: size.height*0.03),
                 child: ReusableButton(onTap: (){
-                  print(current.name+'Add to card');
+                  AddToCart.addToCart(current,context);
                   
                 },
                 text: 'Add To Cart',
