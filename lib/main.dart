@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Fashing',
       theme:AppTheme.appTheme,
-      home: const Cart()
+      home: const MainWrapper()
     );
   }
 }

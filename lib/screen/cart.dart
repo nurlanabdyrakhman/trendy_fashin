@@ -17,16 +17,20 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-    //Delete current list
-    void onDelete(BaseModel data){
-     setState(() {
-     if(itemsOnCart.length==1){
-      itemsOnCart.clear();
-     }else{
-      itemsOnCart.removeWhere((element) => element.id==data.id);
-     }
-     });
-    }
+   //Calcolate the total price
+
+
+  //Delete current list
+  void onDelete(BaseModel data) {
+    setState(() {
+      if (itemsOnCart.length == 1) {
+        itemsOnCart.clear();
+      } else {
+        itemsOnCart.removeWhere((element) => element.id == data.id);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -163,7 +167,16 @@ class _CartState extends State<Cart> {
                                               child: InkWell(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                onTap: () {},
+                                                onTap: () {
+                                                  setState(() {
+                                                    if (current.value > 1) {
+                                                      current.value--;
+                                                    } else {
+                                                      onDelete(current);
+                                                      current.value = 1;
+                                                    }
+                                                  });
+                                                },
                                                 child: const Icon(
                                                   Icons.remove,
                                                   size: 16,
@@ -197,7 +210,13 @@ class _CartState extends State<Cart> {
                                               child: InkWell(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                onTap: () {},
+                                                onTap: () {
+                                                  setState(() {
+                                                    current.value > 0
+                                                        ? current.value++
+                                                        : null;
+                                                  });
+                                                },
                                                 child: const Icon(
                                                   Icons.add,
                                                   size: 16,
@@ -223,7 +242,7 @@ class _CartState extends State<Cart> {
                           height: size.height * 0.02,
                         ),
                         FadeInUp(
-                          delay: const Duration(milliseconds: 200),
+                          delay:  Duration(milliseconds: 100),
                           child: const Image(
                             image: AssetImage('assets/images/empty.png'),
                             fit: BoxFit.cover,
