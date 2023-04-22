@@ -17,8 +17,47 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-   //Calcolate the total price
+  //Calcolate the total price
+  double calculateTotalPrece() {
+    double total = 0.0;
+    if (itemsOnCart.isEmpty) {
+      total = 0.0;
+    } else {
+      for (BaseModel data in itemsOnCart) {
+        total = total + data.price * data.value;
+      }
+    }
+    return total;
+  }
 
+  //Calculate Shopping
+  double calculateShipping() {
+    double shipping = 0.0;
+    if (itemsOnCart.isEmpty) {
+      shipping = 0.0;
+      return shipping;
+    } else if (itemsOnCart.length <= 4) {
+      shipping = 25.95;
+      return shipping;
+    } else {
+      shipping = 88.99;
+      return shipping;
+    }
+  }
+
+  //Calculate sub Total price;,
+  int calculateSubTotal() {
+    int subTotal = 0;
+    if (itemsOnCart.isEmpty) {
+      subTotal = 0;
+    } else {
+      for (BaseModel data in itemsOnCart) {
+        subTotal = subTotal + data.price.round();
+        subTotal = subTotal - 160;
+      }
+    }
+    return subTotal < 0 ? 0 : subTotal;
+  }
 
   //Delete current list
   void onDelete(BaseModel data) {
@@ -242,7 +281,7 @@ class _CartState extends State<Cart> {
                           height: size.height * 0.02,
                         ),
                         FadeInUp(
-                          delay:  Duration(milliseconds: 100),
+                          delay: Duration(milliseconds: 100),
                           child: const Image(
                             image: AssetImage('assets/images/empty.png'),
                             fit: BoxFit.cover,
@@ -318,12 +357,18 @@ class _CartState extends State<Cart> {
                         height: size.height * 0.01,
                       ),
                       FadeInUp(
-                        delay: const Duration(milliseconds: 400),
-                        child: ReusableCartRow(text: 'Sub tutol', price: 140),
+                        delay: Duration(milliseconds: 400),
+                        child: ReusableCartRow(
+                          price: calculateSubTotal().toDouble(),
+                          text: 'Sub Total',
+                        ),
                       ),
                       FadeInUp(
-                        delay: const Duration(milliseconds: 400),
-                        child: ReusableCartRow(text: 'Shopping', price: 150),
+                        delay: const Duration(milliseconds: 450),
+                        child: ReusableCartRow(
+                          text: 'Shipping',
+                          price: calculateShipping(),
+                        ),
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
@@ -331,7 +376,10 @@ class _CartState extends State<Cart> {
                       ),
                       FadeInUp(
                         delay: const Duration(milliseconds: 500),
-                        child: ReusableCartRow(text: 'Total', price: 550),
+                        child: ReusableCartRow(
+                          price: calculateTotalPrece(),
+                          text: 'Total',
+                        ),
                       ),
                       FadeInUp(
                         child: Padding(
